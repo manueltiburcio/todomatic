@@ -1,18 +1,38 @@
+import React, { useState } from 'react';
+import { nanoid } from 'nanoid';
 import Todo from './components/Todo';
 import FilterButton from './components/FilterButton';
 import Form from './components/Form';
 
-function App({ tasks }) {
-  const taskList = tasks.map((task) => {
-    <Todo id={task.id} name={task.id} completed={task.completed} />;
-  });
+function App(props) {
+  const [tasks, setTasks] = useState(props.tasks);
+
+  function addTask(name) {
+    const newTask = {
+      id: 'id',
+      name: name,
+      completed: false,
+    };
+    setTasks([...tasks, newTask]);
+  }
+
+  const taskList = tasks.map((task) => (
+    <Todo
+      id={task.id}
+      name={task.name}
+      completed={task.completed}
+      key={task.id}
+    />
+  ));
 
   return (
     <div className="todoapp stack-large">
       <h1>TodoMatic</h1>
-      <Form />
+      <Form addTask={addTask} />
 
       <div className="filters btn-group stack-exception">
+        <FilterButton />
+        <FilterButton />
         <FilterButton />
       </div>
 
